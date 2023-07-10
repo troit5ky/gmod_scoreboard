@@ -13,7 +13,7 @@ local micMutedIcon = Material( 'icon16/sound_mute.png' )
 -- colors
 
 local white = Color( 255, 255, 255, 255 )
-local grey = Color(32, 32, 32, 174)
+local grey = Color(38, 38, 38, 248)
 
 --
 
@@ -270,7 +270,7 @@ do
 
     function PANEL:Init()
 
-        self.color = Color( grey.r, grey.g, grey.b, grey.a )
+        self.color = Color( white.r, white.g, white.b, 5 )
 
         self:SetSize(0, cardSize)
         self:Dock( TOP )
@@ -320,10 +320,10 @@ do
 
         if self:IsHovered() or self:IsChildHovered() then 
 
-            if self.color['a'] != 224 then self.color['a'] = Lerp( .3, self.color['a'], 224 ) end
+            if self.color['a'] != 8 then self.color['a'] = Lerp( .3, self.color['a'], 8 ) end
 
         else
-            if self.color['a'] != 174 then self.color['a'] = Lerp( .3, self.color['a'], 174 ) end 
+            if self.color['a'] != 3 then self.color['a'] = Lerp( .3, self.color['a'], 3 ) end 
         end
 
         draw_RoundedBox( padding, 0, 0, w, h, self.color )
@@ -565,4 +565,4 @@ hook.Add( 'ScoreboardHide', '_scoreboard_hide', function()
 
 end )
 
-Init() -- debug
+-- Init() -- debug
