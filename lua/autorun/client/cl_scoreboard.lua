@@ -351,7 +351,7 @@ do
         local time = string_FormattedTime( ply:GetUTimeTotalTime() )
 
         self.roleColumn:SetData( { 'Группа', team_GetName( team ), team_GetColor( team ) })
-        self.timeColumn:SetData( { 'Наигранно', string_format( '%sч %sм %sс ', time.h, time.m, time.s ) } )
+        self.timeColumn:SetData( { 'Время игры', string_format( '%sч %sм %sс ', time.h, time.m, time.s ) } )
         self.fragsColumn:SetData( { 'Убийств', ply:Frags() } )
         self.deathsColumn:SetData( { 'Смертей', ply:Deaths() } )
 
