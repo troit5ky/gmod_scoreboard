@@ -200,7 +200,7 @@ do
 
     function PANEL:Init()
 
-        self:Dock( FILL )
+        --self:Dock( FILL )
         self:SetMouseInputEnabled(false)
 
     end
@@ -411,6 +411,10 @@ do
 
     end
 
+    function PANEL:PerformLayout(w, h)
+        self.nickLabel:SetSize(w * .099, 0)
+    end
+
     vgui.Register( 'space.scoreboard.playercard', PANEL, 'EditablePanel' )
 
 end
@@ -565,4 +569,4 @@ hook.Add( 'ScoreboardHide', '_scoreboard_hide', function()
 
 end )
 
--- Init() -- debug
+Init() -- debug
