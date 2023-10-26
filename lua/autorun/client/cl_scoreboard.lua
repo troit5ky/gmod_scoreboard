@@ -614,4 +614,4 @@ hook.Add( 'ScoreboardHide', '_scoreboard_hide', function()
 
 end )
 
-Init() -- debug
+--Init() -- debug
