@@ -200,7 +200,7 @@ do
 
     function PANEL:Init()
 
-        self:Dock( FILL )
+        --self:Dock( FILL )
         self:SetMouseInputEnabled(false)
 
     end
@@ -224,6 +224,8 @@ do
 end
 
 do 
+
+    -- column:SetData( { 'SUBTITLE', 'TITLE', Color() } )
 
     local PANEL = {}
 
@@ -268,6 +270,47 @@ do
 
     local PANEL = {}
 
+    AccessorFunc( PANEL, 'data', 'Data' )
+
+    function PANEL:Init()
+
+        self:SetCursor( 'hand' )
+        
+        self.title = vgui.Create( 'DLabel', self )
+        self.title:SetColor(white)
+        self.title:SetFont( 'space.scoreboard.font' )
+        self.title:SetContentAlignment( 5 )
+
+        self.sub = vgui.Create( 'DImage', self )
+
+
+    end
+
+    function PANEL:PerformLayout(w, h)
+        local data = self:GetData() or {}
+
+        local marg = w*.45
+
+        local country = data[2] or ''
+        self.sub:SetImage('flags16/' .. country .. '.png')
+        self.sub:Dock( TOP )
+        self.sub:SetSize(0, h * .45)
+        self.sub:DockMargin(marg, 0, marg, 0)
+
+        self.title:SetText( data[1] or '' )
+        self.title:SizeToContents( 2 )
+        self.title:Dock( BOTTOM )
+
+    end
+
+    vgui.Register( 'space.scoreboard.flagcolumn', PANEL, 'EditablePanel' )
+
+end
+
+do 
+
+    local PANEL = {}
+
     function PANEL:Init()
 
         self.color = Color( white.r, white.g, white.b, 5 )
@@ -291,6 +334,7 @@ do
         row:Dock( FILL )
 
         self.roleColumn = vgui.Create( 'space.scoreboard.column', row  )
+        self.flagColumn = vgui.Create( 'space.scoreboard.flagcolumn', row)
         self.timeColumn = vgui.Create( 'space.scoreboard.column', row  )
         self.fragsColumn = vgui.Create( 'space.scoreboard.column', row  )
         self.deathsColumn = vgui.Create( 'space.scoreboard.column', row  )
@@ -351,7 +395,8 @@ do
         local time = string_FormattedTime( ply:GetUTimeTotalTime() )
 
         self.roleColumn:SetData( { 'Группа', team_GetName( team ), team_GetColor( team ) })
-        self.timeColumn:SetData( { 'Время игры', string_format( '%sч %sм %sс ', time.h, time.m, time.s ) } )
+        self.flagColumn:SetData( { 'Страна', ply:GetNW2String'scoreboard_country' } )
+        self.timeColumn:SetData( { 'Всего на сервере', string_format( '%sч %sм %sс ', time.h, time.m, time.s ) } )
         self.fragsColumn:SetData( { 'Убийств', ply:Frags() } )
         self.deathsColumn:SetData( { 'Смертей', ply:Deaths() } )
 
@@ -409,6 +454,10 @@ do
 
         menu:Open()
 
+    end
+
+    function PANEL:PerformLayout(w, h)
+        self.nickLabel:SetSize(w * .099, 0)
     end
 
     vgui.Register( 'space.scoreboard.playercard', PANEL, 'EditablePanel' )
@@ -565,4 +614,4 @@ hook.Add( 'ScoreboardHide', '_scoreboard_hide', function()
 
 end )
 
--- Init() -- debug
+--Init() -- debug
