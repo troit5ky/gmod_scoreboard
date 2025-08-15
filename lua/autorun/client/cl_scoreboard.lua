@@ -358,10 +358,10 @@ do
 
         if self:IsHovered() or self:IsChildHovered() then 
 
-            if self.color['a'] != 8 then self.color['a'] = Lerp( .3, self.color['a'], 8 ) end
+            if self.color['a'] != 30 then self.color['a'] = Lerp( .3, self.color['a'], 30 ) end
 
         else
-            if self.color['a'] != 5 then self.color['a'] = Lerp( .3, self.color['a'], 5 ) end 
+            if self.color['a'] != 10 then self.color['a'] = Lerp( .3, self.color['a'], 10 ) end 
         end
 
         draw_RoundedBox( padding, 0, 0, w, h, self.color )
