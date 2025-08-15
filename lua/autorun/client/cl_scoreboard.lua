@@ -7,14 +7,13 @@ local innerPadding = padding/2
 local cardSize = ScreenScale( 23 )
 local micIcon = Material( 'icon16/sound.png' ) 
 local micMutedIcon = Material( 'icon16/sound_mute.png' ) 
+local tick = 0
 
 --
 
 -- colors
 
-local white = Color( 255, 255, 255, 255 )
-local grey = Color(38, 38, 38, 248)
-
+local white = color_white
 --
 
 -- funcs
@@ -151,6 +150,7 @@ do
 
         self.subtitle = vgui.Create( 'DLabel', self )
         local subtitle = self.subtitle
+        subtitle:SetText('')
         subtitle:SetFont( 'space.scoreboard.font' )
         subtitle:SetTextColor( white )
         subtitle:SetContentAlignment( 5 )
@@ -160,10 +160,6 @@ do
         surface.SetFont( "space.scoreboard.font.title" )
         local _, th = surface.GetTextSize( hostname )
         local _, sh = surface.GetTextSize( 'Игроков на сервере %s из %s' )
-
-    end
-
-    function PANEL:PerformLayout(w,h)
 
         local totalSize = 0
 
@@ -178,16 +174,14 @@ do
         self:SetSize( w, totalSize )
 
         self:Dock( TOP )
-        
     end
 
     function PANEL:Think()
+        if tick != 30 then return end
+
         local players = string_format( 'Игроков на сервере %s из %s', player_GetCount(), game_MaxPlayers() )
 
         self.subtitle:SetText( players )
-    end
-    
-    function PANEL:Paint()
     end
 
     vgui.Register( 'space.scoreboard.header', PANEL, 'EditablePanel' )
@@ -224,8 +218,6 @@ do
 end
 
 do 
-
-    -- column:SetData( { 'SUBTITLE', 'TITLE', Color() } )
 
     local PANEL = {}
 
@@ -287,6 +279,8 @@ do
     end
 
     function PANEL:PerformLayout(w, h)
+        if tick != 30 then return end
+        
         local data = self:GetData() or {}
 
         local marg = w*.45
@@ -367,7 +361,7 @@ do
             if self.color['a'] != 8 then self.color['a'] = Lerp( .3, self.color['a'], 8 ) end
 
         else
-            if self.color['a'] != 3 then self.color['a'] = Lerp( .3, self.color['a'], 3 ) end 
+            if self.color['a'] != 5 then self.color['a'] = Lerp( .3, self.color['a'], 5 ) end 
         end
 
         draw_RoundedBox( padding, 0, 0, w, h, self.color )
@@ -375,16 +369,17 @@ do
     end
 
     function PANEL:Think()
+        if tick != 30 then return end
         
         if !IsValid( self.ply ) then 
             self:Remove()
-            
             return
         end
 
     end
 
     function PANEL:SetData( ply, size )
+        if tick < 30 then return end
 
         local sizew, _ = self:GetSize()
 
@@ -479,11 +474,12 @@ do
 
     end
 
-    function PANEL:Think()
+    function PANEL:Paint( w,h )
+        if tick != 30 then return end
 
         for _, ply in ipairs( player_GetAll() ) do
 
-            if !IsValid( ply ) then continue  end
+            if !IsValid( ply ) then continue end
             
             local plyID = !ply:IsBot() and ply:SteamID() or ply:Nick()
 
@@ -504,10 +500,6 @@ do
 
     end
 
-    function PANEL:Paint( w,h )
-
-    end
-
     vgui.Register( 'space.scoreboard.playerlist', PANEL, 'DScrollPanel' )
 
 end
@@ -516,7 +508,7 @@ do
 
     local PANEL = {}
 
-    local iPadding = padding*12
+    local iPadding = padding*6
 
     function PANEL:Init()
 
@@ -542,8 +534,11 @@ do
     end
 
     function PANEL:Paint( w, h )
-        
-        draw_RoundedBox( padding, 0, 0, w, h, grey )
+        tick = tick + 1
+        if tick > 30 then tick = 0 end
+
+        PIXEL.DrawBlur(self, 0, 0, w, h)
+        draw_RoundedBox( padding, 0, 0, w, h, PIXEL.Colors.Background )
 
     end
 
@@ -614,4 +609,4 @@ hook.Add( 'ScoreboardHide', '_scoreboard_hide', function()
 
 end )
 
---Init() -- debug
+Init() -- debug
