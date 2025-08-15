@@ -4,6 +4,7 @@ Simple scoreboard for your server.
 
 ## Dependencies
 
+- [PIXEL-UI](https://github.com/TomDotBat/pixel-ui)
 - [UTime (Be1zebub
 /
 utime recommended)](https://github.com/Be1zebub/utime)
